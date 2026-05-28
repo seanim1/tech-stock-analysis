@@ -4,6 +4,7 @@ digraph call_graph {
     edge  [fontname="Helvetica", fontsize=10]
 
     TSM  [label="TSMC", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/TSM/", target="_blank"]
+    SamsungFoundry  [label="Samsung Foundry\n삼성 파운드리", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/TSM/", target="_blank"]
 
     AWS  [label="Amazon AWS\n아마존 AWS", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AMZN/", target="_blank"]
     Azure  [label="Microsoft Azure\n마이크로소프트 아주르", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/MSFT/", target="_blank"]
@@ -36,21 +37,6 @@ digraph call_graph {
     GPU  [label="GPU", shape=box, fillcolor="#d5bdfc", target="_blank"]
     CPU  [label="CPU", shape=box, fillcolor="#d5bdfc", target="_blank"]
     AI_ASIC  [label="AI ASIC\n인공지능 아식", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    
-    Chip -> GPU
-    Chip -> CPU
-    Chip -> AI_ASIC
-    GPU -> NVDA
-    GPU -> AMD
-    GPU -> INTC
-    CPU -> INTC
-    CPU -> AMD
-    AI_ASIC -> AVGO
-    AI_ASIC -> GOOGL_TPU
-    AI_ASIC -> Trainium
-    AI_ASIC -> Maia
-    AI_ASIC -> MTIA
-    AI_ASIC -> Dojo
 
     NVDA  [label="NVIDIA\n엔비디아", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/NVDA/", target="_blank"]
     AMD  [label="AMD", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AMD/", target="_blank"]
@@ -80,6 +66,17 @@ digraph call_graph {
     LRCX  [label="Lam Research\n램리서치", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/LRCX/", target="_blank"]
     ASML  [label="ASML", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASML/", target="_blank"]
     KLAC [label="KLA", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/LRCX/", target="_blank"]
+    TER [label="Teradyne\n테라다인", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/TER/", target="_blank"]
+    ASX [label="ASE", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
+    AMKR [label="Amkor\n앰코", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
+    
+    Network  [label="Network\n네트워크", shape=box, fillcolor="#d5bdfc", target="_blank"]
+    ANET [label="Arista Networks\n아리스타 네트웍스", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
+    CSCO [label="Cisco\n시스코", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
+    Mellanox [label="NVIDIA Mellanox\n엔비디아 멜라녹스", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
+
+    Network_Chip  [label="Network Chip\n네트워크 칩", shape=box, fillcolor="#d5bdfc", target="_blank"]
+    AVGO_Network [label="Broadcom\n브로드컴", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
 
     Equipment -> Wafer
     Equipment -> Oxidation
@@ -118,12 +115,15 @@ digraph call_graph {
     Metallization -> AMAT
     Metallization -> LRCX
     Metallization -> TEL
+    EDS -> TER
+    Packaging -> ASX
+    Packaging -> AMKR
     Metrology -> KLAC
     
     Foundry -> LogicFoundry
     Foundry -> MemoryFoundry
     LogicFoundry -> TSM
-    
+    LogicFoundry -> SamsungFoundry
     Memory -> DRAM
     Memory -> NAND
     Memory -> HDD
@@ -135,7 +135,27 @@ digraph call_graph {
     NAND -> MU
     NAND -> SNDK
     
-    
+    Chip -> GPU
+    Chip -> CPU
+    Chip -> AI_ASIC
+    GPU -> NVDA
+    GPU -> AMD
+    GPU -> INTC
+    CPU -> INTC
+    CPU -> AMD
+    AI_ASIC -> AVGO
+    AI_ASIC -> GOOGL_TPU
+    AI_ASIC -> Trainium
+    AI_ASIC -> Maia
+    AI_ASIC -> MTIA
+    AI_ASIC -> Dojo
+
+    Network_Chip -> AVGO_Network
+
+    Network -> ANET
+    Network -> CSCO
+    Network -> Mellanox
+
     Cloud -> Hyperscaler
     Hyperscaler -> AWS
     Hyperscaler -> Azure
@@ -148,15 +168,19 @@ digraph call_graph {
         Foundry
         Memory
         Chip
+        Network_Chip
         Cloud
     }
+    
     
     Equipment -> Foundry
     Foundry -> Chip
     Foundry -> Memory
+    Foundry -> Network_Chip
+    Network_Chip -> Network
+    Network -> Cloud
     Memory -> Chip
     Memory -> Cloud
     Chip -> Cloud
-
 
 }

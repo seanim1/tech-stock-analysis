@@ -1,83 +1,52 @@
 digraph call_graph {
-    graph [rankdir=LR, splines=polyline, fontname="Helvetica"]
+    graph [rankdir=LR, splines=line, fontname="Helvetica"]
     node  [fontname="Helvetica", fontsize=12, style=filled]
     edge  [fontname="Helvetica", fontsize=10]
 
-    TSM  [label="TSMC", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/TSM/", target="_blank"]
-    SamsungFoundry  [label="Samsung Foundry\n삼성 파운드리", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/TSM/", target="_blank"]
+    // ─── main chain ───────────────────────────────────────────
+    subgraph {
+        rank=same
+        Equipment  [label="Equipment\n반도체 장비",   shape=box, fillcolor="#d5bdfc"]
+        Foundry    [label="Foundry\n파운드리",        shape=box, fillcolor="#d5bdfc"]
+        Chip       [label="Chip\n칩",                shape=box, fillcolor="#d5bdfc"]
+        Logic_Chip [label="Logic Chip Design\n로직 칩 설계", shape=box, fillcolor="#d5bdfc"]
+        Memory [label="Memory\n메모리", shape=box, fillcolor="#d5bdfc"]
+        Network_Chip [label="Network Chip\n네트워크 칩", shape=box, fillcolor="#d5bdfc"]
+        Cloud      [label="Cloud Provider\n클라우드", shape=box, fillcolor="#d5bdfc"]
+    }
+    Equipment -> Foundry
+    Foundry -> Chip 
+    Foundry -> Memory [constraint = false]
+    Foundry -> Network_Chip  [constraint = false]
+    Chip -> Network_Chip [constraint = false]
+    Chip -> Cloud  [constraint = false]
+    Network_Chip -> Cloud [constraint = false]
+    Chip -> Logic_Chip
+    Chip -> Memory
 
-    AWS  [label="Amazon AWS\n아마존 AWS", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AMZN/", target="_blank"]
-    Azure  [label="Microsoft Azure\n마이크로소프트 아주르", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/MSFT/", target="_blank"]
-    GCP  [label="Google Cloud Platform\n구글 클라우드 플랫폼", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/GOOGL/", target="_blank"]
-    META  [label="Meta\n메타", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/META/", target="_blank"]
-    
+    // ─── equipment & process steps ────────────────────────────
+    subgraph cluster_equipment {
+        label="Equipment 반도체 장비"
+        style=filled
+        fillcolor="#f5f0ff"
 
-    Cloud  [label="Cloud Provider\n클라우드 인프라", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Hyperscaler  [label="Hyperscaler\n하이퍼 스케일러", shape=box, fillcolor="#d5bdfc", target="_blank"]
+        Wafer         [label="Wafer Making\n웨이퍼 제조",       shape=box, fillcolor="#d5bdfc"]
+        Oxidation     [label="Oxidation\n산화공정",             shape=box, fillcolor="#d5bdfc"]
+        Lithography   [label="Photolithography\n포토 리소그래피",shape=box, fillcolor="#d5bdfc"]
+        Etching       [label="Etching\n식각",                   shape=box, fillcolor="#d5bdfc"]
+        Deposition    [label="Deposition\n이온주입",            shape=box, fillcolor="#d5bdfc"]
+        CMP           [label="CMP",                             shape=box, fillcolor="#d5bdfc"]
+        Metallization [label="Metallization\n금속 배선",        shape=box, fillcolor="#d5bdfc"]
+        EDS           [label="EDS",                             shape=box, fillcolor="#d5bdfc"]
+        Packaging     [label="Packaging\n패키징",               shape=box, fillcolor="#d5bdfc"]
+        Metrology     [label="Metrology\n점검",                 shape=box, fillcolor="#d5bdfc"]
 
-    Foundry  [label="Foundry\n파운드리", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    LogicFoundry  [label="Chip\n로직 칩 제조", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    MemoryFoundry  [label="Memory\n메모리 제조", shape=box, fillcolor="#d5bdfc", target="_blank"]
-
-    Memory  [label="Memory\n메모리", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    DRAM  [label="DRAM (HBM)", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    NAND  [label="NAND (SSD)", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    HDD  [label="Hard Drive\n하드 디스크", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Samsung [label="Samsung\n삼성전자", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/005930.KS/", target="_blank"]
-    SKHynix  [label="SK Hynix\nSK하이닉스", shape=box, fillcolor="#bbffc7", URL="https://finance.yahoo.com/quote/000660.KS/", target="_blank"]
-    MU  [label="Micron\n마이크론", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/MU/", target="_blank"]
-    SNDK  [label="SanDisk\n샌디스크", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/SNDK/", target="_blank"]
-
-    Memory  [label="Memory\n메모리", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    DRAM  [label="DRAM (HBM)", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    NAND  [label="NAND (SSD)", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    HDD  [label="Hard Drive\n하드 디스크", shape=box, fillcolor="#d5bdfc", target="_blank"]
-
-    Chip  [label="Chip Design\n로직 칩 설계", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    GPU  [label="GPU", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    CPU  [label="CPU", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    AI_ASIC  [label="AI ASIC\n인공지능 아식", shape=box, fillcolor="#d5bdfc", target="_blank"]
-
-    NVDA  [label="NVIDIA\n엔비디아", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/NVDA/", target="_blank"]
-    AMD  [label="AMD", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AMD/", target="_blank"]
-    INTC  [label="Intel\n인텔", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/INTC/", target="_blank"]
-    AVGO  [label="Broadcom\n브로드컴", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/INTC/", target="_blank"]
-    GOOGL_TPU  [label="Google TPU\n구글", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/INTC/", target="_blank"]
-    Trainium [label="Amazon Trainium\n아마존 Trainium", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/INTC/", target="_blank"]
-    Maia [label="Microsoft Maia\n마이크로소프트 Maia", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/INTC/", target="_blank"]
-    MTIA [label="Meta MTIA\n메타 MTIA", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/INTC/", target="_blank"]
-    Dojo [label="Tesla Dojo & FSD\n테슬라", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/INTC/", target="_blank"]
-
-    Equipment  [label="Equipment\n반도체 장비", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Wafer  [label="Wafer Making\n웨이퍼 제조", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Oxidation  [label="Oxidation\n산화공정", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Lithography  [label="Photolithography\n포토 리소그래피", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Etching  [label="Etching\n식각", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Deposition  [label="Deposition\n이온주입", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    CMP  [label="CMP", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Metallization  [label="Metallization\n금속 배선", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    EDS [label="EDS", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Packaging  [label="Packaging\n패키징", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    Metrology  [label="Metrology\n점검", shape=box, fillcolor="#d5bdfc", target="_blank"]
-
-    SK_Siltron  [label="SK Siltron\nSK 실트론", shape=box, fillcolor="#adffbf", target="_blank"]
-    TEL [label="Tokyo Electron\n도쿄 일렉트론", shape=box, fillcolor="#adffbf", target="_blank"]
-    AMAT  [label="Applied Materials\n어플라이드 머티리얼즈", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/META/", target="_blank"]
-    LRCX  [label="Lam Research\n램리서치", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/LRCX/", target="_blank"]
-    ASML  [label="ASML", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASML/", target="_blank"]
-    KLAC [label="KLA", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/LRCX/", target="_blank"]
-    TER [label="Teradyne\n테라다인", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/TER/", target="_blank"]
-    ASX [label="ASE", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
-    AMKR [label="Amkor\n앰코", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
-    
-    Network  [label="Network\n네트워크", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    ANET [label="Arista Networks\n아리스타 네트웍스", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
-    CSCO [label="Cisco\n시스코", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
-    Mellanox [label="NVIDIA Mellanox\n엔비디아 멜라녹스", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
-
-    Network_Chip  [label="Network Chip\n네트워크 칩", shape=box, fillcolor="#d5bdfc", target="_blank"]
-    AVGO_Network [label="Broadcom\n브로드컴", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASE/", target="_blank"]
-
+        subgraph {
+            rank=same
+            Wafer Oxidation Lithography Etching Deposition CMP Metallization EDS Packaging
+        }
+        Wafer -> Oxidation -> Lithography -> Etching -> Deposition -> CMP -> Metallization -> EDS -> Packaging [style=dashed]
+    }
     Equipment -> Wafer
     Equipment -> Oxidation
     Equipment -> Lithography
@@ -88,99 +57,179 @@ digraph call_graph {
     Equipment -> EDS
     Equipment -> Packaging
     Equipment -> Metrology
-    subgraph {
-        rank=same
-        Wafer
-        Oxidation
-        Lithography
-        Etching
-        Deposition
-        CMP
-        Metallization
-        EDS
-        Packaging
+
+    // ─── equipment vendors ────────────────────────────────────
+    subgraph cluster_equipment_vendors {
+        label="Equipment Vendors"
+        style=filled
+        fillcolor="#f0fff0"
+
+        SK_Siltron [label="SK Siltron\nSK 실트론",              shape=box, fillcolor="#adffbf"]
+        TEL        [label="Tokyo Electron\n도쿄 일렉트론",       shape=box, fillcolor="#adffbf"]
+        AMAT       [label="Applied Materials\n어플라이드",       shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AMAT/",  target="_blank"]
+        LRCX       [label="Lam Research\n램리서치",             shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/LRCX/",  target="_blank"]
+        ASML       [label="ASML",                               shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASML/",  target="_blank"]
+        KLAC       [label="KLA",                                shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/KLAC/",  target="_blank"]
+        TER        [label="Teradyne\n테라다인",                  shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/TER/",   target="_blank"]
+        ASX        [label="ASE",                                shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ASX/",   target="_blank"]
+        AMKR       [label="Amkor\n앰코",                        shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AMKR/",  target="_blank"]
     }
-    Wafer -> Oxidation -> Lithography -> Etching -> Deposition -> CMP -> Metallization -> EDS -> Packaging
-    Wafer -> SK_Siltron
-    Oxidation -> TEL
-    Oxidation -> AMAT
-    Lithography -> ASML
-    Etching -> LRCX
-    Etching -> AMAT
-    Etching -> TEL
-    Deposition -> AMAT
-    Deposition -> AMAT
-    Deposition -> TEL
-    CMP -> AMAT
+    Wafer         -> SK_Siltron
+    Oxidation     -> TEL
+    Oxidation     -> AMAT
+    Lithography   -> ASML
+    Etching       -> LRCX
+    Etching       -> AMAT
+    Etching       -> TEL
+    Deposition    -> AMAT
+    Deposition    -> TEL
+    CMP           -> AMAT
     Metallization -> AMAT
     Metallization -> LRCX
     Metallization -> TEL
-    EDS -> TER
-    Packaging -> ASX
-    Packaging -> AMKR
-    Metrology -> KLAC
-    
+    EDS           -> TER
+    Packaging     -> ASX
+    Packaging     -> AMKR
+    Metrology     -> KLAC
+
+    // ─── foundry ──────────────────────────────────────────────
+    subgraph cluster_foundry {
+        label="Foundry 파운드리"
+        style=filled
+        fillcolor="#f5f0ff"
+
+        LogicFoundry  [label="Logic Chip\n로직 칩 제조",  shape=box, fillcolor="#d5bdfc"]
+        MemoryFoundry [label="Memory\n메모리 제조",       shape=box, fillcolor="#d5bdfc"]
+        TSM           [label="TSMC",                     shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/TSM/",       target="_blank"]
+        SamsungFoundry[label="Samsung Foundry\n삼성",    shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/005930.KS/", target="_blank"]
+
+        LogicFoundry -> TSM
+        LogicFoundry -> SamsungFoundry
+    }
     Foundry -> LogicFoundry
     Foundry -> MemoryFoundry
-    LogicFoundry -> TSM
-    LogicFoundry -> SamsungFoundry
+
+    // ─── memory ───────────────────────────────────────────────
+    subgraph cluster_memory {
+        label="Memory 메모리"
+        style=filled
+        fillcolor="#f5f0ff"
+
+        DRAM    [label="DRAM (HBM)", shape=box, fillcolor="#d5bdfc"]
+        NAND    [label="NAND (SSD)", shape=box, fillcolor="#d5bdfc"]
+        HDD     [label="Hard Drive\n하드 디스크", shape=box, fillcolor="#d5bdfc"]
+        SKHynix [label="SK Hynix\nSK하이닉스",   shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/000660.KS/", target="_blank"]
+        Samsung [label="Samsung\n삼성전자",       shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/005930.KS/", target="_blank"]
+        MU      [label="Micron\n마이크론",        shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/MU/",        target="_blank"]
+        SNDK    [label="SanDisk\n샌디스크",       shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/SNDK/",      target="_blank"]
+
+        DRAM -> SKHynix
+        DRAM -> Samsung
+        DRAM -> MU
+        NAND -> SKHynix
+        NAND -> Samsung
+        NAND -> MU
+        NAND -> SNDK
+    }
     Memory -> DRAM
     Memory -> NAND
     Memory -> HDD
-    DRAM -> SKHynix
-    DRAM -> Samsung
-    DRAM -> MU
-    NAND -> SKHynix
-    NAND -> Samsung
-    NAND -> MU
-    NAND -> SNDK
-    
-    Chip -> GPU
-    Chip -> CPU
-    Chip -> AI_ASIC
-    GPU -> NVDA
-    GPU -> AMD
-    GPU -> INTC
-    CPU -> INTC
-    CPU -> AMD
-    AI_ASIC -> AVGO
-    AI_ASIC -> GOOGL_TPU
-    AI_ASIC -> Trainium
-    AI_ASIC -> Maia
-    AI_ASIC -> MTIA
-    AI_ASIC -> Dojo
 
+    // ─── logic chip design ────────────────────────────────────
+    subgraph cluster_logic_chip {
+        label="Logic Chip Design 로직 칩 설계"
+        style=filled
+        fillcolor="#f5f0ff"
+
+        GPU     [label="GPU",                    shape=box, fillcolor="#d5bdfc"]
+        dGPU    [label="Discrete GPU\n독립 GPU", shape=box, fillcolor="#d5bdfc"]
+        iGPU    [label="Integrated GPU\n내장 GPU",shape=box, fillcolor="#d5bdfc"]
+        CPU     [label="CPU",                    shape=box, fillcolor="#d5bdfc"]
+        AI_ASIC [label="AI ASIC\n인공지능 아식", shape=box, fillcolor="#d5bdfc"]
+        NVDA    [label="NVIDIA\n엔비디아",        shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/NVDA/",  target="_blank"]
+        AMD     [label="AMD",                    shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AMD/",   target="_blank"]
+        INTC    [label="Intel\n인텔",             shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/INTC/",  target="_blank"]
+        ARM     [label="ARM\n암 홀딩스",          shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ARM/",   target="_blank"]
+        QCOM    [label="Qualcomm\n퀄컴",          shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/QCOM/",  target="_blank"]
+        AVGO    [label="Broadcom\n브로드컴",      shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AVGO/",  target="_blank"]
+        GOOGL_TPU     [label="Google TPU\n구글",              shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/GOOGL/", target="_blank"]
+        AMZN_Trainium [label="Amazon Trainium\n아마존",        shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AMZN/",  target="_blank"]
+        MSFT_Maia     [label="Microsoft Maia\n마이크로소프트", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/MSFT/",  target="_blank"]
+        META_MTIA     [label="Meta MTIA\n메타 MTIA",           shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/META/",  target="_blank"]
+        TSLA_Dojo     [label="Tesla Dojo\n테슬라",             shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/TSLA/",  target="_blank"]
+
+        GPU -> dGPU
+        GPU -> iGPU
+        dGPU -> NVDA
+        dGPU -> AMD
+        iGPU -> INTC
+        iGPU -> AMD
+        CPU -> INTC
+        CPU -> AMD
+        CPU -> ARM
+        CPU -> QCOM
+        AI_ASIC -> AVGO
+        AI_ASIC -> GOOGL_TPU
+        AI_ASIC -> AMZN_Trainium
+        AI_ASIC -> MSFT_Maia
+        AI_ASIC -> META_MTIA
+        AI_ASIC -> TSLA_Dojo
+    }
+    Logic_Chip -> GPU
+    Logic_Chip -> CPU
+    Logic_Chip -> AI_ASIC
+
+    // ─── network chip ─────────────────────────────────────────
+    subgraph cluster_network_chip {
+        label="Network Chip 네트워크 칩"
+        style=filled
+        fillcolor="#f5f0ff"
+
+        AVGO_Network [label="Broadcom\n브로드컴", shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AVGO/", target="_blank"]
+    }
     Network_Chip -> AVGO_Network
 
+    // ─── network ──────────────────────────────────────────────
+    subgraph cluster_network {
+        label="Network 네트워크"
+        style=filled
+        fillcolor="#f5f0ff"
+
+        ANET          [label="Arista Networks\n아리스타",  shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/ANET/", target="_blank"]
+        CSCO          [label="Cisco\n시스코",              shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/CSCO/", target="_blank"]
+        NVDA_Mellanox [label="NVIDIA Mellanox\n멜라녹스",  shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/NVDA/", target="_blank"]
+    }
+    Network [label="Network\n네트워크", shape=box, fillcolor="#d5bdfc"]
+    Network_Chip -> Network
     Network -> ANET
     Network -> CSCO
-    Network -> Mellanox
+    Network -> NVDA_Mellanox
 
-    Cloud -> Hyperscaler
-    Hyperscaler -> AWS
-    Hyperscaler -> Azure
-    Hyperscaler -> GCP
-    Hyperscaler -> META
+    // ─── cloud ────────────────────────────────────────────────
+    subgraph cluster_cloud {
+        label="Cloud 클라우드"
+        style=filled
+        fillcolor="#f5f0ff"
 
-    subgraph {
-        rank=same
-        Equipment
-        Foundry
-        Memory
-        Chip
-        Network_Chip
-        Cloud
+        Hyperscaler [label="Hyperscaler\n하이퍼 스케일러", shape=box, fillcolor="#d5bdfc"]
+        AMZN_AWS    [label="Amazon AWS\n아마존",           shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/AMZN/",  target="_blank"]
+        MSFT_Azure  [label="Microsoft Azure\n마이크로소프트",shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/MSFT/",  target="_blank"]
+        GOOGL_GCP   [label="Google Cloud\n구글",           shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/GOOGL/", target="_blank"]
+        META        [label="Meta\n메타",                   shape=box, fillcolor="#adffbf", URL="https://finance.yahoo.com/quote/META/",  target="_blank"]
+
+        Hyperscaler -> AMZN_AWS
+        Hyperscaler -> MSFT_Azure
+        Hyperscaler -> GOOGL_GCP
+        Hyperscaler -> META
     }
-    
-    
-    Equipment -> Foundry
-    Foundry -> Chip
-    Foundry -> Memory
-    Foundry -> Network_Chip
-    Network_Chip -> Network
-    Network -> Cloud
-    Memory -> Chip
-    Memory -> Cloud
-    Chip -> Cloud
+    Cloud -> Hyperscaler
 
+    // ─── same entity dashed links ─────────────────────────────
+    AVGO_Network  -> AVGO      [dir=none, style=dashed]
+    NVDA_Mellanox -> NVDA      [dir=none, style=dashed]
+    SamsungFoundry -> Samsung  [dir=none, style=dashed]
+    AMZN_Trainium -> AMZN_AWS  [dir=none, style=dashed]
+    MSFT_Maia     -> MSFT_Azure[dir=none, style=dashed]
+    GOOGL_TPU     -> GOOGL_GCP [dir=none, style=dashed]
+    META_MTIA     -> META      [dir=none, style=dashed]
 }
